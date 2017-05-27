@@ -5,13 +5,12 @@
     <title>Itinerary</title>
 </head>
     <link href="styles/bootstrap.css" rel="stylesheet">
+    <link href="styles/star-rating.css" rel="stylesheet">
     <link href="styles/common.css" rel="stylesheet">
     <link href="styles/animate.css" rel="stylesheet">
     <link href="styles/style.css" rel="stylesheet">
 <body class="pace-done">
 <div id="app-wrapper">
-
-
     <div class="modal fade" id="OrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -39,6 +38,32 @@
         </div><!-- /.modal -->
     </div>
 
+    <div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        Pay & Comment
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div id="gUser"></div>
+                    <div id="price"></div>
+                    <div>
+                        <div>Stars for this service</div>
+                        <input id="inputStars" value="0" type="number" class="rating" min=0 max=5 step=0.5 data-size="xs" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="finishPay" type="button" class="btn btn-danger" data-dismiss="modal">Confirm
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
@@ -153,6 +178,7 @@
 </div>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/star-rating.js"></script>
 <script src="js/home.js"></script>
 </body>
 </html>
