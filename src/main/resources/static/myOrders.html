@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Itinerary</title>
+</head>
+    <link href="styles/bootstrap.css" rel="stylesheet">
+    <link href="styles/common.css" rel="stylesheet">
+    <link href="styles/animate.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
+<body class="pace-done">
+<div id="app-wrapper">
+
+
+    <div class="modal fade" id="OrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Detailed Information
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" style="margin-bottom: 0px;">
+                            <tbody id="journeys">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Confirm
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <div class="nav-header menu-center">
+                <img id="userImg" alt="" class="profile-img" src="">
+            </div>
+            <div class="menu-center">
+                <p id="nickname" style="font-size: 20px"></p>
+                <p id="userType"></p>
+            </div>
+
+            <ul class="nav metismenu" id="side-menu">
+                <li class="landing_link">
+                    <a href="main.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Main</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="journey.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Journey</span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myProfile.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Profile</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myOrders.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Orders</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="attachment.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Attachments</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="message.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Messages</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg" style="min-height: 700px">
+        <button id="toggle1" class="btn btn-danger" type="submit">To Be Accepted & To Be Paid</button>
+        <button id="toggle2" class="btn btn-white" type="submit">To Be Started & To Be Delivered</button>
+        <button id="toggle3" class="btn btn-white" type="submit">To Be Finished & Finished</button>
+
+        <div class="col-sm-12">
+            <button id="freshOrders" class="btn btn-danger pull-right" type="submit">Fresh</button>
+        </div>
+        <div id="unstarted">
+            <div class="col-lg-4">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders7" style="text-align: center">Canceled</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="canceled" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders1" style="text-align: center">To Be Accepted</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="toAccept" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders2" style="text-align: center">To Be Paid</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="toPay" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="unfinished" style="display: none">
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders3" style="text-align: center">To Be Started</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="toStart" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders4" style="text-align: center">To Be Delivered</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="toDeliver" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="toFinished" style="display: none">
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders5" style="text-align: center">To Be Finished</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="toFinish" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 600px">
+                        <h3 id="orders6" style="text-align: center">Finished</h3>
+                        <ul class="sortable-list agile-list ui-sortable" id="finished" style="max-height: 600px; overflow-y: auto">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

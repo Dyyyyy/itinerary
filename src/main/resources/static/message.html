@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Itinerary</title>
+</head>
+<link href="styles/bootstrap.css" rel="stylesheet">
+<link href="styles/common.css" rel="stylesheet">
+<link href="styles/animate.css" rel="stylesheet">
+<link href="styles/style.css" rel="stylesheet">
+<body class="pace-done">
+<div id="app-wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <div class="nav-header menu-center">
+                <img id="userImg" alt="" class="profile-img" src="">
+            </div>
+            <div class="menu-center">
+                <p id="nickname" style="font-size: 20px"></p>
+                <p id="userType"></p>
+            </div>
+
+            <ul class="nav metismenu" id="side-menu">
+                <li class="landing_link">
+                    <a href="main.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Main</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="journey.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Journey</span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myProfile.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Profile</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="myOrders.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Orders</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="attachment.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Attachments</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+                <li class="landing_link">
+                    <a href="message.html"><span style="color: #D9DDE2" class="nav-label">★</span><span style="color: #D9DDE2" class="nav-label">&nbsp&nbsp&nbsp Messages</span> <span class="label label-warning pull-right"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg" style="min-height: 630px; overflow-y: hidden">
+        <div class="modal fade" id="ChatModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Please search a user.
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group"><label class="col-sm-3 control-label">User Name</label>
+                            <div class="col-sm-8"><input id="toName" class="form-control" placeholder="Name" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" class="btn btn-danger" id="confirmChat">
+                            Confirm
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content mailbox-content">
+                            <div class="file-manager">
+                                <a class="btn btn-block btn-warning compose-mail" onclick="show_chatmodal(this)">Start Chat</a>
+                                <div class="space-25"></div>
+                                <h5>All Contacts</h5>
+                                <ul id="contactList" class="folder-list" style="padding: 0;max-height: 430px; overflow-y: auto">
+                                    <!--<li><a> XXDR <span class="label label-danger pull-right">16</span> </a></li>-->
+                                    <!--<li><a> ZTR</a></li>-->
+                                    <!--<li><a> ZXT</a></li>-->
+                                    <!--<li><a> XX <span class="label label-danger pull-right">2</span></a></li>-->
+                                    <!--<li><a> DYYYY</a></li>-->
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="chatBulk" class="col-lg-9 animated fadeInRight" style="display: none">
+                    <div class="mail-box-header">
+                        <div class="pull-right tooltip-demo">
+                            <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"> Close</a>
+                            <a href="mailbox.html" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"></i> Fresh </a>
+                        </div>
+                        <img id="chatImg" alt="" class="profile-img-sm" src="">
+                        <span id="chatName">
+                            <!--mingzi-->
+                        </span>
+                        <!--<div class="hr-line-dashed"></div>-->
+                    </div>
+                    <div style="background-color: #ffffff; height: 500px">
+                        <div id="chatContent" style="background-color: #ffffff; min-height: 400px; max-height: 400px; overflow-y: auto">
+
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="input-group">
+                            <textarea id="sendText" style="width: 720px; height: 70px"></textarea>
+                            <span class="input-group-btn">
+                                <button id="sendMessage" style="width: 100px; height: 70px" type="button" class="btn btn-primary">Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
