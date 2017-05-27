@@ -39,6 +39,7 @@ let t3 = "Holiday tour";
 let userType = 1;
 let username;
 let nickname;
+let btnClicked = false;
 
 function changeLogin(i) {
     userType = i;
@@ -354,8 +355,7 @@ function currentPage() {
                                     let tags = $("<p></p>").text("Tags:  " + journey.tags);
                                     let time = $("<p></p>").text("Time:  " + journey.startTime + "  TO  " + journey.endTime);
                                     let duration = $("<div class='agile-detail'></div>");
-                                    let button = $("<button value='" + orders[i].orderId + "\' class='pull-right btn btn-xs btn-danger' onclick='changeToFinish(this)'></button>").text("Finish");
-                                    duration.text("Price:  " + journey.price + "RMB");
+                                    let button = $("<button value='" + orders[i].orderId + "&" + orders[i].price + "&" + orders[i].gUsername + "\' class='pull-right btn btn-xs btn-danger' onclick='changeToFinish(this)'></button>").text("Finish");                                    duration.text("Price:  " + journey.price + "RMB");
                                     ele.append(dest).append(type).append(tags).append(time).append(duration);
                                     $("#toFinish").append(ele);
                                     if (userType == 1){
@@ -794,79 +794,83 @@ $("#toggleJourneys").click(function () {
 });
 
 function showOrder(ele) {
-    $('#OrderModal').modal('show');
-    let journeyId = ele.value;
-    $.ajax({
-        url: "/journeys/id?journeyId=" + ele.value,
-        type: 'GET',
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                let journey = data.data;
-                let jName= journey.journeyName;
-                let jNum = journey.phoneNum;
-                let jCity = journey.cityName;
-                let jMember = journey.members;
-                let jType = (journey.tourType == 1)?t1:(journey.tourType == 2)?t2:t3;
-                let jLow = journey.lowPrice;
-                let jHigh = journey.highPrice;
-                let jStart = journey.startTime;
-                let jEnd = journey.endTime;
-                let jTags = journey.tags;
-                let jOther = journey.others;
-                let jDue = journey.dueDate;
-                let jPrice = journey.price;
+    if(!btnClicked) {
+        $('#OrderModal').modal('show');
+        let journeyId = ele.value;
+        $.ajax({
+            url: "/journeys/id?journeyId=" + ele.value,
+            type: 'GET',
+            context: document.body,
+            success: function (data, statusText, xhr) {
+                if (data.code == 200) {
+                    let journey = data.data;
+                    let jName = journey.journeyName;
+                    let jNum = journey.phoneNum;
+                    let jCity = journey.cityName;
+                    let jMember = journey.members;
+                    let jType = (journey.tourType == 1) ? t1 : (journey.tourType == 2) ? t2 : t3;
+                    let jLow = journey.lowPrice;
+                    let jHigh = journey.highPrice;
+                    let jStart = journey.startTime;
+                    let jEnd = journey.endTime;
+                    let jTags = journey.tags;
+                    let jOther = journey.others;
+                    let jDue = journey.dueDate;
+                    let jPrice = journey.price;
 
-                $("#journeys").children("tr").remove();
-                let tr1 = $("<tr></tr>");
-                let ele1 = $("<td style='font-weight:bolder;'>Applicant Name</td>");
-                let name = $("<td style='font-weight:bolder;'>" + jName + "</td>");
-                let tr2 = $("<tr></tr>");
-                let ele2 = $("<td style='font-weight:bolder;'>Phone Number</td>");
-                let num = $("<td style='font-weight:bolder;'>" + jNum + "</td>");
-                let tr3 = $("<tr></tr>");
-                let ele3 = $("<td style='font-weight:bolder;'>Destination</td>");
-                let city = $("<td style='font-weight:bolder;'>" + jCity + "</td>");
-                let tr4 = $("<tr></tr>");
-                let ele4 = $("<td style='font-weight:bolder;'>Member Numbers</td>");
-                let member = $("<td style='font-weight:bolder;'>" + jMember + "</td>");
-                let tr5 = $("<tr></tr>");
-                let ele5 = $("<td style='font-weight:bolder;'>Tour Type</td>");
-                let type = $("<td style='font-weight:bolder;'>" + jType + "</td>");
-                let tr6 = $("<tr></tr>");
-                let ele6 = $("<td style='font-weight:bolder;'>Budget Span</td>");
-                let budget = $("<td style='font-weight:bolder;'>" + jLow + "-" + jHigh + "</td>");
-                let tr7 = $("<tr></tr>");
-                let ele7 = $("<td style='font-weight:bolder;'>Time Span</td>");
-                let time = $("<td style='font-weight:bolder;'>" + jStart + "-" + jEnd + "</td>");
-                let tr8 = $("<tr></tr>");
-                let ele8 = $("<td style='font-weight:bolder;'>Tags</td>");
-                let tag = $("<td style='font-weight:bolder;'>" + jTags + "</td>");
-                let tr9 = $("<tr></tr>");
-                let ele9 = $("<td style='font-weight:bolder;'>Price For Itinerary</td>");
-                let price = $("<td style='font-weight:bolder;'>" + jPrice + "</td>");
-                let tr10 = $("<tr></tr>");
-                let ele10 = $("<td style='font-weight:bolder;'>Due Date</td>");
-                let due = $("<td style='font-weight:bolder;'>" + jDue + "</td>");
-                let tr11 = $("<tr></tr>");
-                let ele11 = $("<td style='font-weight:bolder;'>Other Requirements</td>");
-                let other = $("<td style='font-weight:bolder;'>" + jOther + "</td>");
+                    $("#journeys").children("tr").remove();
+                    let tr1 = $("<tr></tr>");
+                    let ele1 = $("<td style='font-weight:bolder;'>Applicant Name</td>");
+                    let name = $("<td style='font-weight:bolder;'>" + jName + "</td>");
+                    let tr2 = $("<tr></tr>");
+                    let ele2 = $("<td style='font-weight:bolder;'>Phone Number</td>");
+                    let num = $("<td style='font-weight:bolder;'>" + jNum + "</td>");
+                    let tr3 = $("<tr></tr>");
+                    let ele3 = $("<td style='font-weight:bolder;'>Destination</td>");
+                    let city = $("<td style='font-weight:bolder;'>" + jCity + "</td>");
+                    let tr4 = $("<tr></tr>");
+                    let ele4 = $("<td style='font-weight:bolder;'>Member Numbers</td>");
+                    let member = $("<td style='font-weight:bolder;'>" + jMember + "</td>");
+                    let tr5 = $("<tr></tr>");
+                    let ele5 = $("<td style='font-weight:bolder;'>Tour Type</td>");
+                    let type = $("<td style='font-weight:bolder;'>" + jType + "</td>");
+                    let tr6 = $("<tr></tr>");
+                    let ele6 = $("<td style='font-weight:bolder;'>Budget Span</td>");
+                    let budget = $("<td style='font-weight:bolder;'>" + jLow + "-" + jHigh + "</td>");
+                    let tr7 = $("<tr></tr>");
+                    let ele7 = $("<td style='font-weight:bolder;'>Time Span</td>");
+                    let time = $("<td style='font-weight:bolder;'>" + jStart + "-" + jEnd + "</td>");
+                    let tr8 = $("<tr></tr>");
+                    let ele8 = $("<td style='font-weight:bolder;'>Tags</td>");
+                    let tag = $("<td style='font-weight:bolder;'>" + jTags + "</td>");
+                    let tr9 = $("<tr></tr>");
+                    let ele9 = $("<td style='font-weight:bolder;'>Price For Itinerary</td>");
+                    let price = $("<td style='font-weight:bolder;'>" + jPrice + "</td>");
+                    let tr10 = $("<tr></tr>");
+                    let ele10 = $("<td style='font-weight:bolder;'>Due Date</td>");
+                    let due = $("<td style='font-weight:bolder;'>" + jDue + "</td>");
+                    let tr11 = $("<tr></tr>");
+                    let ele11 = $("<td style='font-weight:bolder;'>Other Requirements</td>");
+                    let other = $("<td style='font-weight:bolder;'>" + jOther + "</td>");
 
-                $("#journeys").append(tr1).append(tr2).append(tr3).append(tr4).append(tr5).append(tr6).append(tr7).append(tr8).append(tr9).append(tr10).append(tr11);
-                tr1.append(ele1).append(name);
-                tr2.append(ele2).append(num);
-                tr3.append(ele3).append(city);
-                tr4.append(ele4).append(member);
-                tr5.append(ele5).append(type);
-                tr6.append(ele6).append(budget);
-                tr7.append(ele7).append(time);
-                tr8.append(ele8).append(tag);
-                tr9.append(ele9).append(price);
-                tr10.append(ele10).append(due);
-                tr11.append(ele11).append(other);
+                    $("#journeys").append(tr1).append(tr2).append(tr3).append(tr4).append(tr5).append(tr6).append(tr7).append(tr8).append(tr9).append(tr10).append(tr11);
+                    tr1.append(ele1).append(name);
+                    tr2.append(ele2).append(num);
+                    tr3.append(ele3).append(city);
+                    tr4.append(ele4).append(member);
+                    tr5.append(ele5).append(type);
+                    tr6.append(ele6).append(budget);
+                    tr7.append(ele7).append(time);
+                    tr8.append(ele8).append(tag);
+                    tr9.append(ele9).append(price);
+                    tr10.append(ele10).append(due);
+                    tr11.append(ele11).append(other);
+                }
             }
-        }
-    });
+        });
+    } else {
+        btnClicked = false;
+    }
 }
 
 $("#toggle1").click(function() {
@@ -921,31 +925,32 @@ $("#updateInfo").click(function () {
 });
 
 function changeToDeliver(button) {
-    button.innerText = "Delivered";
-    button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/deliver?orderId=" + button.value,
         type: 'PATCH',
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
+                button.innerText = "Delivered";
+                button.setAttribute("disabled", "disabled");
                 alert("Delivered successfully");
             }
         }
     });
+    btnClicked = true;
 }
 
 let acceptArgs = [];
 function changeToAccept(button) {
     acceptArgs = button.value.split("&");
-    button.innerText = "ACCEPTED";
-    button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/accept?orderId=" + acceptArgs[0],
         type: 'PATCH',
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
+                button.innerText = "ACCEPTED";
+                button.setAttribute("disabled", "disabled");
                 $.ajax({
                     url: "/journeys/topay?journeyId=" + acceptArgs[1],
                     type: 'PATCH',
@@ -960,52 +965,102 @@ function changeToAccept(button) {
             }
         }
     });
+    btnClicked = true;
 }
 
 function changeToPay(button) {
-    button.innerText = "Paid";
-    button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/pay?orderId=" + button.value,
         type: 'PATCH',
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
+                button.innerText = "Paid";
+                button.setAttribute("disabled", "disabled");
                 alert("Paid successfully");
             }
         }
     });
+    btnClicked = true;
 }
 
 function changeToStart(button) {
-    button.innerText = "Started";
-    button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/start?orderId=" + button.value,
         type: 'PATCH',
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
+                button.innerText = "Started";
+                button.setAttribute("disabled", "disabled");
                 alert("Started successfully");
             }
         }
     });
+    btnClicked = true;
 }
 
 function changeToCancel(button) {
-    button.innerText = "Canceled";
-    button.setAttribute("disabled", "disabled");
     $.ajax({
         url: "/orders/cancel?orderId=" + button.value,
         type: 'PATCH',
         context: document.body,
         success: function(data, statusText, xhr){
             if (data.code == 200){
+                button.innerText = "Canceled";
+                button.setAttribute("disabled", "disabled");
                 alert("Canceled successfully");
             }
         }
     });
+    btnClicked = true;
 }
+
+let finishArgs;
+let finishBtn;
+function changeToFinish(button) {
+    finishArgs = button.value.split("&");
+    finishBtn = button;
+    $("#gUser").text("Guide:  " + finishArgs[2]);
+    $("#price").text("Price:  " + finishArgs[1]);
+    $("#finishModal").modal("show");
+    btnClicked = true;
+}
+
+$("#finishPay").click(function () {
+    let stars = $("#inputStars").val();
+    if (stars == 0){
+        alert("Please rank first");
+        return false;
+    }
+    $.ajax({
+        url: "/orders/finish?orderId=" + finishArgs[0],
+        type: 'PATCH',
+        context: document.body,
+        success: function(data, statusText, xhr){
+            if (data.code == 200){
+                $.ajax({
+                    url: "/payGuide",
+                    type: 'PATCH',
+                    data: JSON.stringify({
+                        username: finishArgs[2],
+                        stars: stars,
+                        balance: finishArgs[1]
+                    }),
+                    contentType: "application/json",
+                    context: document.body,
+                    success: function(data, statusText, xhr){
+                        if (data.code == 200){
+                            alert("Finished successfully");
+                            finishBtn.innerText = "Finished";
+                            finishBtn.setAttribute("disabled", "disabled");
+                        }
+                    }
+                });
+            }
+        }
+    });
+});
 
 let gUsername = "";
 function trcolor(tr, gname) {  // bug修改别的行数
@@ -1279,36 +1334,6 @@ $("#confirmPay").click(function () {
     });
     $('#myPayModal').modal('hide');
 });
-
-function changeToFinish(button) {
-    $.ajax({
-        url: "/orders/finish?orderId=" + button.value,
-        type: 'PATCH',
-        context: document.body,
-        success: function(data, statusText, xhr){
-            if (data.code == 200){
-                $.ajax({
-                    url: "/payGuide",
-                    type: 'PATCH',
-                    data: JSON.stringify({
-                        username: "xx",
-                        stars: 2,
-                        balance: 1
-                    }),
-                    contentType: "application/json",
-                    context: document.body,
-                    success: function(data, statusText, xhr){
-                        if (data.code == 200){
-                            alert("Finished successfully");
-                            button.innerText = "Finished";
-                            button.setAttribute("disabled", "disabled");
-                        }
-                    }
-                });
-            }
-        }
-    });
-}
 
 $("#freshJourney").click(function () {
     currentPage();
